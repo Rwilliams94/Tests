@@ -1,22 +1,48 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  font-family: Roboto;
+  width: 100vw;
+  max-width: 1200px;
+  height: 100vh;
+  background: white;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
 }
 
-.App-link {
-  color: #09d3ac;
+/* general */
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* home page */
+
+.title {
+  height: 10%;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin: 10px 0;
+}
+
+
+@media only screen and (max-width: 875px) {
+
+  .main-title {
+    font-size: 1.7rem;
+    font-weight: 500;
+    color: rgb(77, 102, 128);
+  }
 }
