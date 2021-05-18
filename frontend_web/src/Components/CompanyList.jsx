@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import "../Styles/CompanyList.css";
-import api from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import '../Styles/CompanyList.css';
+import api from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
 
 const CompanyList = ({ openPopUp }) => {
   const dispatch = useDispatch();
@@ -23,33 +23,33 @@ const CompanyList = ({ openPopUp }) => {
 
   // Hide functions
 
-  function handleHideCompany(id) {
-    dispatch({ type: "HIDE", payload: id });
+  const handleHideCompany = (id) => {
+    dispatch({ type: 'HIDE', payload: id });
   }
 
-  function handleReset() {
-    dispatch({ type: "RESET" });
+  const handleReset = () => {
+    dispatch({ type: 'RESET' });
   }
 
-  function handleUndo() {
-    dispatch({ type: "UNDO" });
+  const handleUndo = () => {
+    dispatch({ type: 'UNDO' });
   }
 
-  // Company details
+  // Company details and open pop up
 
-  function handleSetCompany(id) {
-    dispatch({ type: "COMPANYCHANGE", payload: id });
-    openPopUp();
+  const handleSetCompany = (id) => {
+    dispatch({ type: 'COMPANYCHANGE', payload: id });
+    dispatch({ type: 'POPUPOPEN'});
   }
 
   // Change page
 
-  function handleMoveListPrev() {
+  const handleMoveListPrev = () => {
     if (page === 1) return;
     setPage(page - 1);
   }
 
-  function handleMoveListNext() {
+  const handleMoveListNext = () => {
     setPage(page + 1);
   }
 
@@ -60,34 +60,34 @@ const CompanyList = ({ openPopUp }) => {
   // console.log(hidden);
 
   return (
-    <div className="companylist-main flex-col">
-      <table className="company-table flex-col">
-        <thead className="company-table-head flex">
-          <tr className="company-table-row">
-            <th className="company-table-title title-name">
+    <div className='companylist-main flex-col'>
+      <table className='company-table flex-col'>
+        <thead className='company-table-head flex'>
+          <tr className='company-table-row'>
+            <th className='company-table-title title-name'>
               <h2>Company Name</h2>
             </th>
-            <th className="company-table-title title-id">
+            <th className='company-table-title title-id'>
               <h2>Company ID</h2>
             </th>
-            <th className="company-table-title title-buttons flex">
-              <p className="list-button smaller" onClick={handleUndo}>
+            <th className='company-table-title title-buttons flex'>
+              <p className='list-button smaller' onClick={handleUndo}>
                 Undo hide
               </p>
-              <p className="list-button smaller" onClick={handleReset}>
+              <p className='list-button smaller' onClick={handleReset}>
                 Reset list
               </p>
             </th>
           </tr>
         </thead>
-        <tbody className="company-table-body">
+        <tbody className='company-table-body'>
           {companyList.map((company) =>
             hidden.includes(company.id) ? (
-              ""
+              ''
             ) : (
-              <tr className={`company-list-item flex`} key={company.id}>
+              <tr className='company-list-item flex' key={company.id}>
                 <td
-                  className="company-list-name"
+                  className='company-list-name'
                   onClick={() => {
                     handleSetCompany(company.id);
                   }}
@@ -95,16 +95,16 @@ const CompanyList = ({ openPopUp }) => {
                   <h3>{company.name}</h3>
                 </td>
                 <td
-                  className="company-list-other"
+                  className='company-list-other'
                   onClick={() => {
                     handleSetCompany(company.id);
                   }}
                 >
                   <h3>{company.id}</h3>
                 </td>
-                <td className="company-list-other">
+                <td className='company-list-other'>
                   <div
-                    className={`company-list-button flex`}
+                    className='company-list-button flex'
                     onClick={() => {
                       handleHideCompany(company.id);
                     }}
@@ -118,12 +118,12 @@ const CompanyList = ({ openPopUp }) => {
         </tbody>
       </table>
 
-      <div className="pageLinks flex">
-        <p className={`list-button`} onClick={handleMoveListPrev}>
+      <div className='pageLinks flex'>
+        <p className='list-button' onClick={handleMoveListPrev}>
           Previous
         </p>
         <p>Page {page}</p>
-        <p className={`list-button`} onClick={handleMoveListNext}>
+        <p className='list-button'  onClick={handleMoveListNext}>
           Next
         </p>
       </div>

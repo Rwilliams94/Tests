@@ -1,44 +1,60 @@
-
 const initialState = {
-    hidden: [],
-    companyId: null,
-}
+  hidden: [],
+  companyId: null,
+  popUp: false,
+};
 
 function rootReducer(state = initialState, action) {
+  switch (action.type) {
+    // hidden list
 
-    switch(action.type) {
-        case 'SET' : 
-             return {
-            ...state,
-            hidden: action.payload
-        }
-        case 'HIDE' : 
-            return {
-                ...state,
-                hidden: [...state.hidden, action.payload]
-            }
-        case 'RESET' : 
-            return {
-                ...state,
-                hidden: []
-            }
+    case "SET":
+      return {
+        ...state,
+        hidden: action.payload,
+      };
+    case "HIDE":
+      return {
+        ...state,
+        hidden: [...state.hidden, action.payload],
+      };
+    case "RESET":
+      return {
+        ...state,
+        hidden: [],
+      };
 
-        case 'UNDO' :
-            return {
-                ...state,
-                hidden: state.hidden.slice(0,-1)
-            }
-        case 'COMPANYCHANGE' :
-            return {
-                ...state,
-                companyId: action.payload
-            }
-        default : 
-        
-            return state;
-        }    
+    case "UNDO":
+      return {
+        ...state,
+        hidden: state.hidden.slice(0, -1),
+      };
+
+    // Company details
+
+    case "COMPANYCHANGE":
+      return {
+        ...state,
+        companyId: action.payload,
+      };
+
+    // PopUp
+
+    case "POPUPOPEN":
+      return {
+        ...state,
+        popUp: true,
+      };
+
+    case "POPUPCLOSE":
+      return {
+        ...state,
+        popUp: false,
+      };
+
+    default:
+      return state;
+  }
 }
 
-
-
-export default rootReducer
+export default rootReducer;
