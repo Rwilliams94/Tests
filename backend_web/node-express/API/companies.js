@@ -2,62 +2,75 @@ const express = require("express");
 
 const router = express.Router();
 
-const queries = require('../db/queries')
+const queries = require("../db/queries");
 
 // middlewares
 
-function isValidCompany(req, res, next) {
-    if(!isNaN(req.params.id)) return next();
-    next (new Error('invalid ID'));
+// make sure input is a valid ID
+
+function isValidId(req, res, next) {
+  if (!isNaN(req.params.id)) return next();
+  next(new Error("invalid ID"));
 }
 
 // routes
 
-router.get('/', async (req, res, next) => {
-    try {
-        const companies = await queries.getAll();
-        res.json(companies);
-    } catch {
-        next()
-    }
-  
+router.get("/", async (req, res, next) => {
+  try {
+    const companies = await queries.getAll();
+    res.json(companies);
+  } catch {
+    (err) => {
+      res.status(500).json(err);
+    };
+  }
 });
 
-router.get('/:id', isValidCompany, async (req, res, next) => {
+router.get("/:id", isValidId, async (req, res, next) => {
+  try {
+    // get company using ID
 
-    try {
-        const company = await queries.getOne(req.params.id)
-        if(company) {
-            res.json(company);
-        } else {
-            res.status(404).json({message: "company not found"})
-            next()
-        }
-        
-    } catch {
-        next()
+    const company = await queries.getOne(req.params.id);
+
+    // if company exists, return the details
+
+    if (company) {
+      res.json(company);
+    } else {
+      res.status(404).json({ message: "company not found" });
+      next();
     }
-  
+  } catch {
+    (err) => {
+      res.status(500).json(err);
+    };
+  }
 });
 
-router.get('/matches/:id', isValidCompany, async (req, res, next) => {
-     
-    const matchId = req.params.id
+router.get("/matches/:id", isValidId, async (req, res, next) => {
+  const companyId = req.params.id;
 
-    try {
-        
-        const matchRow = await queries.findMatches(matchId)
-        if(matchRow) {
-            const matchArray = Object.values(matchRow).slice(1).filter(id => id !== Number(matchId))
-            const match = await queries.getOne(matchArray[0])
-            res.json(match)
-        } else {
-            res.json({message: "invalid match - no matches found"})
-        }
+  try {
+    // search match db
 
-    } catch {
-        next()
+    const matchRow = await queries.findMatches(companyId);
+
+    // if match exists, select the matching company and get details
+
+    if (matchRow) {
+      const matchArray = Object.values(matchRow)
+        .slice(1)
+        .filter((id) => id !== Number(companyId));
+      const match = await queries.getOne(matchArray[0]);
+      res.json(match);
+    } else {
+      res.json({ message: "invalid match - no matches found" });
     }
+  } catch {
+    (err) => {
+      res.status(500).json(err);
+    };
+  }
 });
 
 module.exports = router;
